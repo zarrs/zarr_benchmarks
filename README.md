@@ -84,6 +84,18 @@ This benchmark measures the minimum time and peak memory usage to read a dataset
 
 ![read chunks benchmark image dask](./plots/benchmark_read_chunks_dask.svg)
 
+## Read Inner-Chunk-By-Inner-Chunk Benchmark
+
+This benchmark measures the the minimum time and peak memory usage to read a dataset inner-chunk-by-inner-chunk into memory.
+ - The disk cache is cleared between each measurement
+ - These are best of 5 measurements
+
+[Table of raw measurements (benchmarks_read_inner_chunks.md)](./measurements/benchmarks_read_inner_chunks.md)
+
+### Standalone
+
+![read chunks benchmark image](./plots/benchmark_read_inner_chunks.svg)
+
 ## Read All Benchmark
 This benchmark measures the minimum time and peak memory usage to read an entire dataset into memory.
  - The disk cache is cleared between each measurement
