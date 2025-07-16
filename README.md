@@ -9,16 +9,15 @@ This repository contains benchmarks of Zarr V3 implementations.
 > Also consider restarting development of the official zarr benchmark repository: https://github.com/zarr-developers/zarr-benchmark
 
 ## Implementations Benchmarked
-- [`LDeakin/zarrs`](https://github.com/LDeakin/zarrs) via [`LDeakin/zarrs_tools`](https://github.com/LDeakin/zarrs_tools)
-  - Read executable: [zarrs_benchmark_read_sync](https://github.com/LDeakin/zarrs_tools/blob/main/src/bin/zarrs_benchmark_read_sync.rs)
-  - Round trip executable: [zarrs_reencode](https://github.com/LDeakin/zarrs_tools/blob/main/src/bin/zarrs_reencode.rs)
-- Python (v3.12.7):
-  - [`google/tensorstore`](https://github.com/google/tensorstore)
-  - [`zarr-developers/zarr-python`](https://github.com/zarr-developers/zarr-python)
-    - With and without the `ZarrsCodecPipeline` from [`ilan-gold/zarrs-python`](https://github.com/ilan-gold/zarrs-python)
-    - With and without [`dask`](https://github.com/dask/dask)
+- [`zarrs/zarrs`](https://github.com/zarrs/zarrs) via [`zarrs/zarrs_tools`](https://github.com/zarrs/zarrs_tools)
+  - Read executable: [zarrs_benchmark_read_sync](https://github.com/zarrs/zarrs_tools/blob/main/src/bin/zarrs_benchmark_read_sync.rs)
+  - Round trip executable: [zarrs_reencode](https://github.com/zarrs/zarrs_tools/blob/main/src/bin/zarrs_reencode.rs)
+- [`google/tensorstore`](https://github.com/google/tensorstore)
+- [`zarr-developers/zarr-python`](https://github.com/zarr-developers/zarr-python)
+  - With and without the `ZarrsCodecPipeline` from [`zarrs/zarrs-python`](https://github.com/zarrs/zarrs-python)
+  - With and without [`dask`](https://github.com/dask/dask)
 
-Benchmark scripts are in the [scripts](./scripts/) folder and implementation versions are listed in the benchmark charts.
+Implementation versions are listed in the benchmark charts.
 
 > [!WARNING]
 > Python benchmarks are subject to the overheads of Python and may not be using an optimal API/parameters.
@@ -37,17 +36,17 @@ Benchmark scripts are in the [scripts](./scripts/) folder and implementation ver
 ## Benchmark Data
 All datasets are $1024x2048x2048$ `uint16` arrays.
 
-| Name                               | Chunk Shape | Shard Shape | Compression                 | Size   |
-|------------------------------------|-------------|-------------|-----------------------------|--------|
-| Uncompressed                       | $256^3$     |             | None                        | 8.0 GB |
-| Compressed                         | $256^3$     |             | `blosclz` 9 + bitshuffling  | 377 MB |
-| Compressed + Sharded               | $32^3$      | $256^3$     | `blosclz` 9 + bitshuffling  | 1.1 GB |
+| Name                               | Chunk / Shard Shape | Inner Chunk Shape | Compression                 | Size    |
+|------------------------------------|---------------------|-------------------|-----------------------------|---------|
+| Uncompressed                       | $256^3$             |                   | None                        | 8.00 GB |
+| Compressed                         | $256^3$             |                   | `blosclz` 9 + bitshuffling  | 659  MB |
+| Compressed + Sharded               | $256^3$             | $32^3$            | `blosclz` 9 + bitshuffling  | 1.20 GB |
 
 ## Benchmark System
 - AMD Ryzen 5900X
 - 64GB DDR4 3600MHz (16-19-19-39)
 - 2TB Samsung 990 Pro
-- Ubuntu 22.04 (in Windows 11 WSL2, swap disabled, 32GB available memory)
+- Arch Linux (in Windows 11 WSL2, swap disabled, 32GB available memory)
 
 ## Round Trip Benchmark
 

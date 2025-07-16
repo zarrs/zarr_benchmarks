@@ -3,8 +3,6 @@
 import subprocess
 import numpy as np
 import click
-from functools import reduce
-from operator import mul
 
 @click.command()
 @click.argument('output_path')
@@ -33,12 +31,14 @@ def main(output_path, shard, compress):
 
     p = subprocess.Popen(args, stdin=subprocess.PIPE)
     shape = [1024, 2048, 2048]
-    bytes_per_element = 2
 
     # Write random bytes
     # def write_data():
     #     import random
+    #     from functools import reduce
+    #     from operator import mul
     #     random.seed(123)
+    #     bytes_per_element = 2
     #     n_bytes = reduce(mul, shape, 1) * bytes_per_element
     #     while n_bytes > 0:
     #         n = min(n_bytes, 1024)

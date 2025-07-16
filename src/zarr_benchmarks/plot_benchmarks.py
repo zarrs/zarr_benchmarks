@@ -37,12 +37,12 @@ else:
     zarrs_ver = "0.18.0-beta.0"
 
 IMPLEMENTATIONS = {
-    "zarrs_rust": f"LDeakin/zarrs ({zarrs_ver})",
+    "zarrs_rust": f"zarrs/zarrs ({zarrs_ver})",
     "tensorstore_python": f"google/tensorstore ({tensorstore.__version__})",
     "zarr_python": f"zarr-developers/zarr-python ({zarr.__version__})",
-    "zarrs_python": f"zarr-developers/zarr-python ({zarr.__version__}) \n + ilan-gold/zarrs-python ({zarrs.__version__}) ZarrsCodecPipeline",
+    "zarrs_python": f"zarr-developers/zarr-python ({zarr.__version__}) \n + zarrs/zarrs-python ({zarrs.__version__}) ZarrsCodecPipeline",
     "zarr_dask_python": "Default BatchedCodecPipeline",
-    "zarrs_dask_python": f"ZarrsCodecPipeline via ilan-gold/zarrs-python ({zarrs.__version__})",
+    "zarrs_dask_python": f"ZarrsCodecPipeline via zarrs/zarrs-python ({zarrs.__version__})",
 }
 
 IMAGES = {
@@ -249,12 +249,17 @@ def plot_roundtrip(plot_dask: bool, ymax: float):
     fig.savefig(f"plots/benchmark_roundtrip{'_dask' if plot_dask else ''}.svg", metadata={'Date': None, 'Creator': None})
     # fig.savefig(f"plots/benchmark_roundtrip{'_dask' if plot_dask else ''}.pdf", metadata={'Date': None, 'Creator': None})
 
-if __name__ == "__main__":
+
+def main():
     plot_read_all(plot_dask=False, ymax=YMAX_READ_ALL)
     plot_read_all(plot_dask=True, ymax=YMAX_READ_ALL_DASK)
     plot_read_chunks(plot_dask=False)
     plot_read_chunks(plot_dask=True)
     plot_roundtrip(plot_dask=False, ymax=YMAX_ROUNDTRIP)
     plot_roundtrip(plot_dask=True, ymax=YMAX_ROUNDTRIP_DASK)
+    plt.show()
 
-plt.show()
+
+if __name__ == "__main__":
+    main()
+
