@@ -36,11 +36,11 @@ Implementation versions are listed in the benchmark charts.
 ## Benchmark Data
 All datasets are $1024x2048x2048$ `uint16` arrays.
 
-| Name                               | Chunk / Shard Shape | Inner Chunk Shape | Compression                 | Size    |
-|------------------------------------|---------------------|-------------------|-----------------------------|---------|
-| Uncompressed                       | $256^3$             |                   | None                        | 8.00 GB |
-| Compressed                         | $256^3$             |                   | `blosclz` 9 + bitshuffling  | 659  MB |
-| Compressed + Sharded               | $256^3$             | $32^3$            | `blosclz` 9 + bitshuffling  | 1.20 GB |
+| Name                               | Chunk / Shard Shape | Inner Chunk Shape | Compression | Size    |
+|------------------------------------|---------------------|-------------------|-------------|---------|
+| Uncompressed                       | $256^3$             |                   | None        | 8.00 GB |
+| Compressed                         | $256^3$             |                   | `zstd` 0    | 659  MB |
+| Compressed + Sharded               | $256^3$             | $32^3$            | `zstd` 0    | 1.20 GB |
 
 ## Benchmark System
 - AMD Ryzen 5900X
