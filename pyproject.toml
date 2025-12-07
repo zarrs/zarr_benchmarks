@@ -26,7 +26,6 @@ dependencies = [
 ]
 
 [project.scripts]
-generate_benchmark_array = "zarr_benchmarks.generate_benchmark_array:main"
 run_benchmark_read_all = "zarr_benchmarks.run_benchmark_read_all:main"
 run_benchmark_read_chunks = "zarr_benchmarks.run_benchmark_read_chunks:main"
 run_benchmark_roundtrip = "zarr_benchmarks.run_benchmark_roundtrip:main"

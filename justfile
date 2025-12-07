@@ -5,9 +5,9 @@ binstall:
 	curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
 generate_data:
-	uv run generate_benchmark_array data/benchmark.zarr
-	uv run generate_benchmark_array --compress data/benchmark_compress.zarr
-	uv run generate_benchmark_array --compress --shard data/benchmark_compress_shard.zarr
+	./generate_benchmark_array.rs data/benchmark.zarr
+	./generate_benchmark_array.rs --compress data/benchmark_compress.zarr
+	./generate_benchmark_array.rs --compress --subchunk-shape 32,32,32 data/benchmark_compress_shard.zarr
 
 benchmark_read_all:
 	uv run run_benchmark_read_all
