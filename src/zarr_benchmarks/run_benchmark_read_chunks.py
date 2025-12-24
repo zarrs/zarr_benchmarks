@@ -4,6 +4,7 @@ import subprocess
 import re
 import pandas as pd
 import math
+import numpy as np
 from zarr_benchmarks import clear_cache, time_args
 
 
@@ -53,7 +54,9 @@ def main():
         "data/benchmark_compress.zarr",
         "data/benchmark_compress_shard.zarr",
     ]
-    concurrent_chunks_list = [1, 2, 4, 8, 16, 32]
+    concurrent_chunks_list = [1, 2, 4, 8] #, 16, 32]
+
+    best_of = 3
 
     index = []
     for image in images:
@@ -66,41 +69,49 @@ def main():
             wall_times = []
             memory_usages = []
             for implementation in implementations:
-                print(implementation, image, concurrent_chunks)
-                args = (
-                    time_args()
-                    + implementation_to_args[implementation]
-                    + [str(concurrent_chunks)]
-                    + [image]
-                )
-                clear_cache()
-                pipes = subprocess.Popen(
-                    args, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-                )
-                std_out, std_err = pipes.communicate()
-                # print(std_err)
+                wall_time_measurements = []
+                memory_usage_measurements = []
+                for i in range(best_of):
+                    print(implementation, image, concurrent_chunks, i)
+                    args = (
+                        time_args()
+                        + implementation_to_args[implementation]
+                        + [str(concurrent_chunks)]
+                        + [image]
+                    )
+                    clear_cache()
+                    pipes = subprocess.Popen(
+                        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                    )
+                    std_out, std_err = pipes.communicate()
+                    # print(std_err)
 
-                wall_time = re.search(
-                    r"Elapsed \(wall clock\) time \(h:mm:ss or m:ss\): (\d+?):([\d\.]+?)\\n",
-                    str(std_err),
-                )
-                memory_usage = re.search(
-                    r"Maximum resident set size \(kbytes\): (\d+?)\\n", str(std_err)
-                )
-                if wall_time and memory_usage and pipes.returncode == 0:
-                    m = int(wall_time.group(1))
-                    s = float(wall_time.group(2))
-                    wall_time_s = m * 60 + s
-                    memory_usage_kb = int(memory_usage.group(1))
-                    memory_usage_gb = float(memory_usage_kb) / 1.0e6
-                    print(wall_time_s, memory_usage_gb)
-                    wall_times.append(wall_time_s)
-                    memory_usages.append(memory_usage_gb)
-                else:
-                    print(std_out)
-                    print(std_err)
-                    wall_times.append(math.nan)
-                    memory_usages.append(math.nan)
+                    wall_time = re.search(
+                        r"Elapsed \(wall clock\) time \(h:mm:ss or m:ss\): (\d+?):([\d\.]+?)\\n",
+                        str(std_err),
+                    )
+                    memory_usage = re.search(
+                        r"Maximum resident set size \(kbytes\): (\d+?)\\n", str(std_err)
+                    )
+                    if wall_time and memory_usage and pipes.returncode == 0:
+                        m = int(wall_time.group(1))
+                        s = float(wall_time.group(2))
+                        wall_time_s = m * 60 + s
+                        memory_usage_kb = int(memory_usage.group(1))
+                        memory_usage_gb = float(memory_usage_kb) / 1.0e6
+                        print(wall_time_s, memory_usage_gb)
+                        wall_time_measurements.append(wall_time_s)
+                        memory_usage_measurements.append(memory_usage_gb)
+                    else:
+                        print(std_out)
+                        print(std_err)
+                        wall_time_measurements.append(math.nan)
+                        memory_usage_measurements.append(math.nan)
+
+                wall_time_best = np.nanmin(wall_time_measurements)
+                memory_usage_best = np.nanmin(memory_usage_measurements)
+                wall_times.append(wall_time_best)
+                memory_usages.append(memory_usage_best)
             row = wall_times + memory_usages
             rows.append(row)
 

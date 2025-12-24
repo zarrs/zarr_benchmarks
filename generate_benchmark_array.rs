@@ -47,7 +47,7 @@ struct Args {
     output_path: String,
 
     /// Array shape.
-    #[arg(long, default_value_t = Shape([1024, 2048, 2048]))]
+    #[arg(long, default_value_t = Shape([1024, 1024, 1024]))]
     array_shape: Shape,
 
     /// Chunk shape.

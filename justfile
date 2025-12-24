@@ -7,7 +7,7 @@ binstall:
 generate_data:
 	./generate_benchmark_array.rs data/benchmark.zarr
 	./generate_benchmark_array.rs --compress data/benchmark_compress.zarr
-	./generate_benchmark_array.rs --compress --subchunk-shape 32,32,32 data/benchmark_compress_shard.zarr
+	./generate_benchmark_array.rs --compress --subchunk-shape 64,64,64 data/benchmark_compress_shard.zarr
 
 benchmark_read_all:
 	uv run run_benchmark_read_all

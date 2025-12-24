@@ -6,7 +6,7 @@ This repository contains benchmarks of Zarr V3 implementations.
 > [!NOTE]
 > Contributions are welcomed for additional benchmarks, more implementations, or otherwise cleaning up this repository.
 >
-> Also consider restarting development of the official zarr benchmark repository: https://github.com/zarr-developers/zarr-benchmark
+> Also consider restarting development of the official Zarr benchmark repository: https://github.com/zarr-developers/zarr-benchmark
 
 ## Implementations Benchmarked
 - [`zarrs/zarrs`](https://github.com/zarrs/zarrs) via [`zarrs/zarrs_tools`](https://github.com/zarrs/zarrs_tools)
@@ -34,23 +34,24 @@ Implementation versions are listed in the benchmark charts.
  - `benchmark_all`: run all benchmarks
 
 ## Benchmark Data
-All datasets are $1024x2048x2048$ `uint16` arrays.
+All datasets are $1024x1024x1024$ `uint16` arrays.
 
 | Name                               | Chunk / Shard Shape | Inner Chunk Shape | Compression | Size    |
 |------------------------------------|---------------------|-------------------|-------------|---------|
-| Uncompressed                       | $256^3$             |                   | None        | 8.00 GB |
-| Compressed                         | $256^3$             |                   | `zstd` 0    | 659  MB |
-| Compressed + Sharded               | $256^3$             | $32^3$            | `zstd` 0    | 1.20 GB |
+| Uncompressed                       | $256^3$             | -                 | None        | 2.00 GB |
+| Compressed                         | $256^3$             | -                 | `zstd` 0    | 83  MB |
+| Compressed + Sharded               | $256^3$             | $64^3$            | `zstd` 0    | 439 MB |
 
 ## Benchmark System
-- AMD Ryzen 5900X
-- 64GB DDR4 3600MHz (16-19-19-39)
-- 2TB Samsung 990 Pro
-- Arch Linux (in Windows 11 WSL2, swap disabled, 32GB available memory)
+- Dell 14 Pro Premium
+  - CPU: Intel(R) Core(TM) Ultra 7 268V (8) @ 5.00 GHz
+  - Memory: 32GB LPDDR5X 8533 MT/s 
+  - SSD: 2TB EG6 KIOXIA
+  - OS: Arch Linux (6.18.2)
 
 ## Round Trip Benchmark
 
-This benchmark measures time and peak memory usage to "round trip" a dataset (potentially chunk-by-chunk).
+This benchmark measures the minimum time and peak memory usage to "round trip" a dataset (potentially chunk-by-chunk).
  - The disk cache is cleared between each measurement
  - These are best of 3 measurements
 
@@ -66,9 +67,9 @@ This benchmark measures time and peak memory usage to "round trip" a dataset (po
 
 ## Read Chunk-By-Chunk Benchmark
 
-This benchmark measures the the minimum time and peak memory usage to read a dataset chunk-by-chunk into memory.
+This benchmark measures the minimum time and peak memory usage to read a dataset chunk-by-chunk into memory.
  - The disk cache is cleared between each measurement
- - These are best of 1 measurements
+ - These are best of 3 measurements
 
 [Table of raw measurements (benchmarks_read_chunks.md)](./measurements/benchmark_read_chunks.md)
 
@@ -84,7 +85,7 @@ This benchmark measures the the minimum time and peak memory usage to read a dat
 ![read chunks benchmark image dask](./plots/benchmark_read_chunks_dask.svg)
 
 ## Read All Benchmark
-This benchmark measures the minimum time and and peak memory usage to read an entire dataset into memory.
+This benchmark measures the minimum time and peak memory usage to read an entire dataset into memory.
  - The disk cache is cleared between each measurement
  - These are best of 3 measurements
 
