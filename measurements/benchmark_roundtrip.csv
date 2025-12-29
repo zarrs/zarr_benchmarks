@@ -1,6 +1,6 @@
 Metric,Time (s),Time (s),Time (s),Time (s),Time (s),Time (s),Memory (GB),Memory (GB),Memory (GB),Memory (GB),Memory (GB),Memory (GB)
 Implementation,zarrs_rust,tensorstore_python,zarr_python,zarrs_python,zarr_dask_python,zarrs_dask_python,zarrs_rust,tensorstore_python,zarr_python,zarrs_python,zarr_dask_python,zarrs_dask_python
 Image,,,,,,,,,,,,
-data/benchmark.zarr,0.55,2.06,3.96,1.14,3.81,1.47,0.58562,0.348608,2.590732,2.420384,0.499808,0.649308
-data/benchmark_compress.zarr,0.43,1.94,3.82,1.07,3.65,1.33,0.502716,0.36802,2.619184,2.441108,0.501764,0.64682
-data/benchmark_compress_shard.zarr,1.25,1.42,6.53,1.79,4.6,1.54,0.327028,0.395656,2.581444,2.219996,0.703864,0.761808
+data/benchmark.zarr,0.54,2.1,4.05,1.18,4.03,1.53,0.306952,0.348132,2.590524,2.419944,0.492284,0.648864
+data/benchmark_compress.zarr,0.44,2.01,3.93,1.18,3.78,1.36,0.467516,0.364904,2.623144,2.441272,0.500536,0.650796
+data/benchmark_compress_shard.zarr,1.35,1.48,7.15,1.86,4.76,1.59,0.351836,0.396696,2.55616,2.221992,0.718336,0.742644
