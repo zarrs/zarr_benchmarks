@@ -52,7 +52,7 @@ def main():
         "data/benchmark_compress_shard.zarr",
     ]
 
-    best_of = 3
+    best_of = 5
 
     index = []
     rows = []

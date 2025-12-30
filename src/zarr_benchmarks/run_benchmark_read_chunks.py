@@ -56,7 +56,7 @@ def main():
     ]
     concurrent_chunks_list = [1, 2, 4, 8] #, 16, 32]
 
-    best_of = 3
+    best_of = 5
 
     index = []
     for image in images:
