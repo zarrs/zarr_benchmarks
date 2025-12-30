@@ -1,7 +1,7 @@
 Metric,,Time (s),Time (s),Time (s),Time (s),Memory (GB),Memory (GB),Memory (GB),Memory (GB)
 Implementation,,zarrs_rust,tensorstore_python,zarr_python,zarrs_python,zarrs_rust,tensorstore_python,zarr_python,zarrs_python
 Image,Concurrency,,,,,,,,
-data/benchmark_compress_shard.zarr,1,1.81,4.1,6.85,5.77,0.029728,0.056804,0.052752,0.058772
-data/benchmark_compress_shard.zarr,2,0.98,2.65,3.54,2.74,0.033744,0.068776,0.063124,0.070176
-data/benchmark_compress_shard.zarr,4,0.69,1.02,3.54,2.02,0.042004,0.076764,0.06762,0.074004
-data/benchmark_compress_shard.zarr,8,0.48,0.89,3.97,1.84,0.058576,0.088944,0.0754,0.084584
+data/benchmark_compress_shard.zarr,1,1.8,3.81,7.34,7.68,0.029628,0.056184,0.052284,0.05796
+data/benchmark_compress_shard.zarr,2,0.96,2.75,3.78,2.84,0.033636,0.068816,0.062616,0.068644
+data/benchmark_compress_shard.zarr,4,0.64,1.03,3.58,2.02,0.042056,0.0778,0.067112,0.072532
+data/benchmark_compress_shard.zarr,8,0.49,0.85,3.65,1.77,0.058616,0.088708,0.075128,0.082444
