@@ -10,32 +10,38 @@ from zarr_benchmarks import clear_cache, time_args
 
 def main():
     implementation_to_args = {
-        "zarrs_rust": ["zarrs_benchmark_read_sync", "--concurrent-chunks"],
-        "zarrs_rust_async_as_sync": [
-            "zarrs_benchmark_read_async_as_sync",
+        "zarrs_rust": [
+            "zarrs_benchmark_read_sync",
+            "--inner-chunks",
             "--concurrent-chunks",
         ],
-        "zarrs_rust_async": ["zarrs_benchmark_read_async", "--concurrent-chunks"],
+        "zarrs_rust_async_as_sync": [
+            "zarrs_benchmark_read_async_as_sync",
+            "--inner-chunks",
+            "--concurrent-chunks",
+        ],
+        "zarrs_rust_async": [
+            "zarrs_benchmark_read_async",
+            "--inner-chunks",
+            "--concurrent-chunks",
+        ],
         "tensorstore_python": [
             "./src/zarr_benchmarks/tensorstore_python_benchmark_read.py",
+            "--inner_chunks",
             "--concurrent_chunks",
         ],
         "zarr_python": [
             "./src/zarr_benchmarks/zarr_python_benchmark_read.py",
+            "--inner_chunks",
             "--concurrent_chunks",
         ],
-        "zarr_dask_python": [
-            "./src/zarr_benchmarks/zarr_dask_python_benchmark_read.py",
-            "--concurrent_chunks",
-        ],
+        # "zarr_dask_python": ["./src/zarr_benchmarks/zarr_dask_python_benchmark_read.py", "--concurrent_chunks"],
         "zarrs_python": [
             "./src/zarr_benchmarks/zarrs_python_benchmark_read.py",
+            "--inner_chunks",
             "--concurrent_chunks",
         ],
-        "zarrs_dask_python": [
-            "./src/zarr_benchmarks/zarrs_dask_python_benchmark_read.py",
-            "--concurrent_chunks",
-        ],
+        # "zarrs_dask_python": ["./src/zarr_benchmarks/zarrs_dask_python_benchmark_read.py", "--concurrent_chunks"],
     }
 
     implementations = [
@@ -45,16 +51,14 @@ def main():
         "tensorstore_python",
         "zarr_python",
         "zarrs_python",
-        "zarr_dask_python",
-        "zarrs_dask_python",
+        # "zarr_dask_python",
+        # "zarrs_dask_python",
     ]
 
     images = [
-        "data/benchmark.zarr",
-        "data/benchmark_compress.zarr",
         "data/benchmark_compress_shard.zarr",
     ]
-    concurrent_chunks_list = [1, 2, 4, 8] #, 16, 32]
+    concurrent_chunks_list = [1, 2, 4, 8]  # , 16, 32]
 
     best_of = 5
 
@@ -151,14 +155,16 @@ def main():
     df = pd.DataFrame.from_dict(data, orient="tight")
     print(df)
     print()
-    df.to_csv("measurements/benchmark_read_chunks.csv")
+    df.to_csv("measurements/benchmark_read_inner_chunks.csv")
 
     # Print and save markdown
     df_markdown = df.copy()
     df_markdown.columns = columns_markdown
     df_markdown.reset_index(inplace=True)
     print(df_markdown.to_markdown(index=False, floatfmt=".02f"))
-    df_markdown.to_markdown("measurements/benchmark_read_chunks.md", floatfmt=".02f")
+    df_markdown.to_markdown(
+        "measurements/benchmark_read_inner_chunks.md", floatfmt=".02f"
+    )
 
 
 if __name__ == "__main__":

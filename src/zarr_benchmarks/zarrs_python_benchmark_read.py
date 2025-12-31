@@ -38,8 +38,9 @@ def coro(f):
 @coro
 @click.argument('path', type=str)
 @click.option('--concurrent_chunks', type=int, default=None, help='Number of concurrent async chunk reads. Ignored if --read-all is set')
+@click.option('--inner_chunks', is_flag=True, show_default=True, default=False, help='Reader inner-chunk-by-inner-chunk. Ignored if --read-all is set')
 @click.option('--read_all', is_flag=True, show_default=True, default=False, help='Read the entire array in one operation.')
-async def main(path, concurrent_chunks, read_all):
+async def main(path, concurrent_chunks, inner_chunks, read_all):
     # if "benchmark_compress_shard.zarr" in path:
     #     sys.exit(1)
 
@@ -51,18 +52,21 @@ async def main(path, concurrent_chunks, read_all):
     dataset = zarr.open(store=store, mode='r')
 
     domain_shape = dataset.shape
-    chunk_shape = dataset.shards or dataset.chunks
+    if inner_chunks:
+        chunk_shape = dataset.chunks
+    else:
+        chunk_shape = dataset.shards or dataset.chunks
 
     print("Domain shape", domain_shape)
     print("Chunk shape", chunk_shape)
     num_chunks =[(domain + chunk_shape - 1) // chunk_shape for (domain, chunk_shape) in zip(domain_shape, chunk_shape)]
     print("Number of chunks", num_chunks)
 
-    async def chunk_read(chunk_index):
-        indexer = BlockIndexer(chunk_index, dataset.shape, dataset.metadata.chunk_grid)
-        return await dataset._async_array._get_selection(
-            indexer=indexer, prototype=default_buffer_prototype()
-        )
+    def get_chunk_indexer(chunk_idx, chunk_shape):
+        return tuple(slice(i * s, (1 + i) * s) for i, s in zip(chunk_idx, chunk_shape))
+
+    async def chunk_read(indexer):
+        return await dataset._async_array.getitem(indexer)
 
     start_time = timeit.default_timer()
     if read_all:
@@ -70,15 +74,15 @@ async def main(path, concurrent_chunks, read_all):
     elif concurrent_chunks is None:
         async with asyncio.TaskGroup() as tg:
             for chunk_index in np.ndindex(*num_chunks):
-                tg.create_task(chunk_read(chunk_index))
+                tg.create_task(chunk_read(get_chunk_indexer(chunk_index, chunk_shape)))
     elif concurrent_chunks == 1:
         for chunk_index in np.ndindex(*num_chunks):
-            dataset[tuple(slice(i * s, (1 + i) * s) for i, s in zip(chunk_index, chunk_shape))]
+            dataset[get_chunk_indexer(chunk_index, chunk_shape)]
     else:
         semaphore = asyncio.Semaphore(concurrent_chunks)
         async def chunk_read_concurrent_limit(chunk_index):
             async with semaphore:
-                return await chunk_read(chunk_index)
+                return await chunk_read(get_chunk_indexer(chunk_index, chunk_shape))
         async with asyncio.TaskGroup() as tg:
             for chunk_index in np.ndindex(*num_chunks):
                 tg.create_task(chunk_read_concurrent_limit(chunk_index))
