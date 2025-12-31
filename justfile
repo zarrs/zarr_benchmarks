@@ -15,8 +15,8 @@ benchmark_read_all:
 benchmark_read_chunks:
 	uv run run_benchmark_read_chunks
 
-benchmark_read_inner_chunks:
-	uv run run_benchmark_read_inner_chunks
+benchmark_read_subchunks:
+	uv run run_benchmark_read_subchunks
 
 benchmark_roundtrip:
 	uv run run_benchmark_roundtrip
@@ -24,4 +24,4 @@ benchmark_roundtrip:
 plot:
 	uv run plot_benchmarks
 
-benchmark_all: benchmark_read_all benchmark_read_chunks benchmark_read_inner_chunks benchmark_roundtrip
+benchmark_all: benchmark_read_all benchmark_read_chunks benchmark_read_subchunks benchmark_roundtrip

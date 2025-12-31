@@ -28,7 +28,7 @@ dependencies = [
 [project.scripts]
 run_benchmark_read_all = "zarr_benchmarks.run_benchmark_read_all:main"
 run_benchmark_read_chunks = "zarr_benchmarks.run_benchmark_read_chunks:main"
-run_benchmark_read_inner_chunks = "zarr_benchmarks.run_benchmark_read_inner_chunks:main"
+run_benchmark_read_subchunks = "zarr_benchmarks.run_benchmark_read_subchunks:main"
 run_benchmark_roundtrip = "zarr_benchmarks.run_benchmark_roundtrip:main"
 plot_benchmarks = "zarr_benchmarks.plot_benchmarks:main"
 

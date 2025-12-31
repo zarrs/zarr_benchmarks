@@ -27,18 +27,18 @@ def main():
         ],
         "tensorstore_python": [
             "./src/zarr_benchmarks/tensorstore_python_benchmark_read.py",
-            "--inner_chunks",
+            "--subchunks",
             "--concurrent_chunks",
         ],
         "zarr_python": [
             "./src/zarr_benchmarks/zarr_python_benchmark_read.py",
-            "--inner_chunks",
+            "--subchunks",
             "--concurrent_chunks",
         ],
         # "zarr_dask_python": ["./src/zarr_benchmarks/zarr_dask_python_benchmark_read.py", "--concurrent_chunks"],
         "zarrs_python": [
             "./src/zarr_benchmarks/zarrs_python_benchmark_read.py",
-            "--inner_chunks",
+            "--subchunks",
             "--concurrent_chunks",
         ],
         # "zarrs_dask_python": ["./src/zarr_benchmarks/zarrs_dask_python_benchmark_read.py", "--concurrent_chunks"],
@@ -155,7 +155,7 @@ def main():
     df = pd.DataFrame.from_dict(data, orient="tight")
     print(df)
     print()
-    df.to_csv("measurements/benchmark_read_inner_chunks.csv")
+    df.to_csv("measurements/benchmark_read_subchunks.csv")
 
     # Print and save markdown
     df_markdown = df.copy()
@@ -163,7 +163,7 @@ def main():
     df_markdown.reset_index(inplace=True)
     print(df_markdown.to_markdown(index=False, floatfmt=".02f"))
     df_markdown.to_markdown(
-        "measurements/benchmark_read_inner_chunks.md", floatfmt=".02f"
+        "measurements/benchmark_read_subchunks.md", floatfmt=".02f"
     )
 
 

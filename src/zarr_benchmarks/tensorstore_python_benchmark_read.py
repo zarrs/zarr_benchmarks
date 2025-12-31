@@ -19,9 +19,9 @@ def coro(f):
 @coro
 @click.argument('path', type=str)
 @click.option('--concurrent_chunks', type=int, default=None, help='Number of concurrent async chunk reads. Ignored if --read-all is set')
-@click.option('--inner_chunks', is_flag=True, show_default=True, default=False, help='Reader inner-chunk-by-inner-chunk. Ignored if --read-all is set')
+@click.option('--subchunks', is_flag=True, show_default=True, default=False, help='Reader inner-chunk-by-inner-chunk. Ignored if --read-all is set')
 @click.option('--read_all', is_flag=True, show_default=True, default=False, help='Read the entire array in one operation.')
-async def main(path, concurrent_chunks, inner_chunks, read_all):
+async def main(path, concurrent_chunks, subchunks, read_all):
     if path.startswith("http"):
         kvstore = {
             'driver': 'http',
@@ -47,7 +47,7 @@ async def main(path, concurrent_chunks, inner_chunks, read_all):
     print(dataset)
 
     domain_shape = dataset.domain.shape
-    if inner_chunks:
+    if subchunks:
         chunk_shape = dataset.chunk_layout.read_chunk.shape
     else:
         chunk_shape = dataset.chunk_layout.write_chunk.shape # shard or chunk shape

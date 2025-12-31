@@ -84,17 +84,18 @@ This benchmark measures the minimum time and peak memory usage to read a dataset
 
 ![read chunks benchmark image dask](./plots/benchmark_read_chunks_dask.svg)
 
-## Read Inner-Chunk-By-Inner-Chunk Benchmark
+## Read Subchunk-By-Subchunk Benchmark
 
-This benchmark measures the the minimum time and peak memory usage to read a dataset inner-chunk-by-inner-chunk into memory.
+This benchmark measures the minimum time and peak memory usage to read a dataset subchunk-by-subchunk into memory.
+A subchunk is an inner chunk within a sharded chunk.
  - The disk cache is cleared between each measurement
  - These are best of 5 measurements
 
-[Table of raw measurements (benchmarks_read_inner_chunks.md)](./measurements/benchmarks_read_inner_chunks.md)
+[Table of raw measurements (benchmarks_read_subchunks.md)](./measurements/benchmarks_read_subchunks.md)
 
 ### Standalone
 
-![read chunks benchmark image](./plots/benchmark_read_inner_chunks.svg)
+![read chunks benchmark image](./plots/benchmark_read_subchunks.svg)
 
 ## Read All Benchmark
 This benchmark measures the minimum time and peak memory usage to read an entire dataset into memory.
