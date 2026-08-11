@@ -1,15 +1,15 @@
-Metric,,Time (s),Time (s),Time (s),Time (s),Time (s),Time (s),Memory (GB),Memory (GB),Memory (GB),Memory (GB),Memory (GB),Memory (GB)
-Implementation,,zarrs_rust,tensorstore_python,zarr_python,zarrs_python,zarr_dask_python,zarrs_dask_python,zarrs_rust,tensorstore_python,zarr_python,zarrs_python,zarr_dask_python,zarrs_dask_python
-Image,Concurrency,,,,,,,,,,,,
-data/benchmark.zarr,1,0.94,1.75,2.07,1.83,2.44,2.05,0.062456,0.117392,0.116172,0.117804,0.166112,0.167928
-data/benchmark.zarr,2,0.59,1.09,1.19,1.09,1.86,1.58,0.095028,0.162788,0.149056,0.177488,0.19874,0.232284
-data/benchmark.zarr,4,0.48,0.81,0.94,0.95,1.58,1.25,0.164736,0.279716,0.214516,0.271596,0.264332,0.33406
-data/benchmark.zarr,8,0.45,0.74,0.94,0.89,1.49,1.23,0.30396,0.34098,0.345708,0.476808,0.395596,0.523552
-data/benchmark_compress.zarr,1,0.39,1.05,1.3,1.39,2.09,1.59,0.062688,0.12094,0.122352,0.126704,0.170988,0.176684
-data/benchmark_compress.zarr,2,0.21,0.68,0.89,0.8,1.36,1.2,0.0995,0.179808,0.155804,0.189656,0.20352,0.2338
-data/benchmark_compress.zarr,4,0.13,0.52,0.73,0.63,1.21,1.01,0.173276,0.258904,0.220104,0.278956,0.275732,0.321952
-data/benchmark_compress.zarr,8,0.13,0.46,0.71,0.62,1.11,1.01,0.32044,0.385784,0.329896,0.429716,0.394144,0.477948
-data/benchmark_compress_shard.zarr,1,0.66,1.67,2.01,1.3,2.43,1.74,0.071232,0.106756,0.20708,0.13758,0.29714,0.187
-data/benchmark_compress_shard.zarr,2,0.47,1.01,1.8,1.08,2.11,1.47,0.122384,0.161916,0.261484,0.175088,0.308376,0.215404
-data/benchmark_compress_shard.zarr,4,0.36,0.69,1.82,0.92,2.01,1.34,0.220688,0.244376,0.327704,0.266896,0.418288,0.295816
-data/benchmark_compress_shard.zarr,8,0.3,0.57,1.78,0.84,2.08,1.21,0.405096,0.313776,0.47552,0.444024,0.499328,0.47882
+Metric,,Time (s),Time (s),Time (s),Time (s),Time (s),Memory (GB),Memory (GB),Memory (GB),Memory (GB),Memory (GB)
+Implementation,,zarrs_rust,tensorstore_python,zarr_python,zarrs_python,zarrista_python,zarrs_rust,tensorstore_python,zarr_python,zarrs_python,zarrista_python
+Image,Concurrency,,,,,,,,,,
+data/benchmark.zarr,1,0.79,1.19,1.13,1.21,0.91,0.043088,0.115424,0.115248,0.116496,0.06816
+data/benchmark.zarr,2,0.74,1.07,1.06,1.13,0.9,0.076208,0.1808,0.213936,0.182384,0.101088
+data/benchmark.zarr,4,0.76,1.02,1.09,1.04,0.95,0.14208,0.312112,0.345184,0.313632,0.166688
+data/benchmark.zarr,8,0.86,1.04,1.07,1.04,0.93,0.273824,0.57472,0.607776,0.576352,0.297952
+data/benchmark_compress.zarr,1,0.36,0.76,0.82,0.93,0.62,0.044928,0.116992,0.1172,0.118528,0.069872
+data/benchmark_compress.zarr,2,0.33,0.53,0.67,0.64,0.41,0.081984,0.186688,0.219968,0.187536,0.110304
+data/benchmark_compress.zarr,4,0.23,0.52,0.59,0.54,0.4,0.151296,0.326944,0.359648,0.32336,0.180544
+data/benchmark_compress.zarr,8,0.17,0.49,0.63,0.58,0.32,0.289968,0.602768,0.598656,0.59896,0.322448
+data/benchmark_compress_shard.zarr,1,0.55,1.59,1.56,0.9,0.71,0.059328,0.155136,0.173664,0.131376,0.11536
+data/benchmark_compress_shard.zarr,2,0.47,1.06,1.36,0.73,0.6,0.108592,0.228848,0.286064,0.2352,0.187248
+data/benchmark_compress_shard.zarr,4,0.38,0.79,1.36,0.78,0.54,0.199456,0.339312,0.504528,0.365888,0.300288
+data/benchmark_compress_shard.zarr,8,0.41,0.61,1.41,0.66,0.58,0.374096,0.472256,0.8004,0.497376,0.440144

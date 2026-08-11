@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
+import os
 import subprocess
 import re
 import pandas as pd
 import math
 import numpy as np
-from zarr_benchmarks import clear_cache, time_args
+from zarr_benchmarks import clear_cache, time_args, ensure_sudo
 
 
 def main():
+    ensure_sudo()
     implementation_to_args = {
         "zarrs_rust": ["zarrs_benchmark_read_sync", "--concurrent-chunks"],
         "zarrs_rust_async_as_sync": [
@@ -36,6 +38,10 @@ def main():
             "./src/zarr_benchmarks/zarrs_dask_python_benchmark_read.py",
             "--concurrent_chunks",
         ],
+        "zarrista_python": [
+            "./src/zarr_benchmarks/zarrista_python_benchmark_read.py",
+            "--concurrent_chunks",
+        ],
     }
 
     implementations = [
@@ -45,8 +51,10 @@ def main():
         "tensorstore_python",
         "zarr_python",
         "zarrs_python",
-        "zarr_dask_python",
-        "zarrs_dask_python",
+        "zarrista_python",
+        # Dask variants excluded from this run; see the design spec.
+        # "zarr_dask_python",
+        # "zarrs_dask_python",
     ]
 
     images = [
@@ -56,7 +64,8 @@ def main():
     ]
     concurrent_chunks_list = [1, 2, 4, 8] #, 16, 32]
 
-    best_of = 5
+    # Repetitions per measurement; results aggregate with nanmin.
+    best_of = int(os.environ.get("BEST_OF", "5"))
 
     index = []
     for image in images:

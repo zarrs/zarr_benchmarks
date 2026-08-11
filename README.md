@@ -16,6 +16,9 @@ This repository contains benchmarks of Zarr V3 implementations.
 - [`zarr-developers/zarr-python`](https://github.com/zarr-developers/zarr-python)
   - With and without the `ZarrsCodecPipeline` from [`zarrs/zarrs-python`](https://github.com/zarrs/zarrs-python)
   - With and without [`dask`](https://github.com/dask/dask)
+- [`developmentseed/zarrista`](https://github.com/developmentseed/zarrista)
+  - A low-level Zarr API for Python built on `zarrs`
+  - Benchmarked via its synchronous API on a native `FilesystemStore`
 
 Implementation versions are listed in the benchmark charts.
 
@@ -43,17 +46,36 @@ All datasets are $1024x1024x1024$ `uint16` arrays.
 | Compressed + Sharded               | $256^3$             | $64^3$            | `zstd` 0    | 439 MB |
 
 ## Benchmark System
-- Dell 14 Pro Premium
-  - CPU: Intel(R) Core(TM) Ultra 7 268V (8) @ 5.00 GHz
-  - Memory: 32GB LPDDR5X 8533 MT/s 
-  - SSD: 2TB EG6 KIOXIA
-  - OS: Arch Linux (6.18.2)
+- Apple MacBook Pro
+  - CPU: Apple M2 Pro (10 cores)
+  - Memory: 16GB
+  - OS: macOS (Darwin 25.5.0)
+
+> [!NOTE]
+> The read benchmarks below were measured on the system above. The dask and
+> round trip plots retain earlier measurements from a different machine
+> (Dell 14 Pro Premium, Intel Core Ultra 7 268V, 32GB, Arch Linux) and are not
+> directly comparable to the read plots.
+
+> [!NOTE]
+> `zarrista` notes:
+> - Its concurrency axis is Python worker threads, not asyncio tasks: its async
+>   API cannot accept a filesystem store. zarrista releases the GIL, so the
+>   threads give real parallelism. Codec options are left at their defaults, so
+>   the axis means the same as for the other implementations: N chunks in
+>   flight, each free to use the library's internal parallelism.
+> - The subchunk benchmark shares one `ShardCache` across threads, so each shard
+>   index is read once. Other implementations are not given an equivalent cache.
 
 ## Round Trip Benchmark
 
 This benchmark measures the minimum time and peak memory usage to "round trip" a dataset (potentially chunk-by-chunk).
  - The disk cache is cleared between each measurement
  - These are best of 5 measurements
+
+> [!WARNING]
+> Measured on the earlier reference system, not the benchmark system above.
+> `zarrista` does not appear in this benchmark.
 
 [Table of raw measurements (benchmarks_roundtrip.md)](./measurements/benchmark_roundtrip.md)
 
@@ -77,10 +99,10 @@ This benchmark measures the minimum time and peak memory usage to read a dataset
 
 ![read chunks benchmark image](./plots/benchmark_read_chunks.svg)
 
-> [!NOTE]
-> `zarr-python` benchmarks with sharding are not visible in this plot
-
 ### Dask
+
+> [!WARNING]
+> Measured on the earlier reference system, not the benchmark system above.
 
 ![read chunks benchmark image dask](./plots/benchmark_read_chunks_dask.svg)
 
@@ -109,5 +131,8 @@ This benchmark measures the minimum time and peak memory usage to read an entire
 ![read all benchmark image](./plots/benchmark_read_all.svg)
 
 ### Dask
+
+> [!WARNING]
+> Measured on the earlier reference system, not the benchmark system above.
 
 ![read all benchmark image dask](./plots/benchmark_read_all_dask.svg)
