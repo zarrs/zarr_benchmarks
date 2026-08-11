@@ -13,6 +13,7 @@ import zarr
 import zarrs
 import dask
 import tensorstore
+import zarrista
 
 plt.rcParams['svg.hashsalt'] = 'deterministic'
 
@@ -46,6 +47,7 @@ IMPLEMENTATIONS = {
     "tensorstore_python": f"google/tensorstore ({tensorstore.__version__})",
     "zarr_python": f"zarr-developers/zarr-python ({zarr.__version__})",
     "zarrs_python": f"zarr-developers/zarr-python ({zarr.__version__}) \n + zarrs/zarrs-python ({zarrs.__version__}) ZarrsCodecPipeline",
+    "zarrista_python": f"developmentseed/zarrista ({zarrista.__version__})",
     "zarr_dask_python": "Default BatchedCodecPipeline",
     "zarrs_dask_python": f"ZarrsCodecPipeline via zarrs/zarrs-python ({zarrs.__version__})",
 }
@@ -65,6 +67,7 @@ COLORS = {
     "zarrs_python": _tab10[3],
     "zarr_dask_python": _tab10[4],
     "zarrs_dask_python": _tab10[5],
+    "zarrista_python": _tab10[6],
 }
 
 plt.rcParams.update({
@@ -410,13 +413,12 @@ def plot_roundtrip(plot_dask: bool, ymax: float):
 
 
 def main():
+    # Only the three standalone read benchmarks are re-run locally. The dask and
+    # roundtrip plots keep their committed data from the reference system; see
+    # docs/superpowers/specs/2026-08-11-zarrista-benchmarks-design.md.
     plot_read_all(plot_dask=False, ymax=YMAX_READ_ALL)
-    plot_read_all(plot_dask=True, ymax=YMAX_READ_ALL_DASK)
     plot_read_chunks(plot_dask=False)
-    plot_read_chunks(plot_dask=True)
     plot_read_subchunks(plot_dask=False)
-    plot_roundtrip(plot_dask=False, ymax=YMAX_ROUNDTRIP)
-    plot_roundtrip(plot_dask=True, ymax=YMAX_ROUNDTRIP_DASK)
     # plt.show()
 
 
