@@ -139,9 +139,10 @@ No other implementation is given an equivalent (tensorstore's `cache_pool` is
 commented out in its script), so this is an advantage — it is called out in the
 README rather than hidden.
 
-`ShardCache` thread-safety is unverified. If it is not thread-safe, use one cache
-per worker thread, which retains most of the benefit. **This must be checked
-before the benchmark run.**
+`ShardCache` is thread-safe, so a single cache is shared across all worker
+threads. Verified against ground truth with distinct per-element values: 512
+subchunks read at 1, 4, 8, and 16 workers, plus 512 contended reads of a single
+shard, all byte-exact with no crashes.
 
 ### 4. Correctness verification
 
@@ -177,9 +178,10 @@ overlap IO with decode (tensorstore) would silently lose a real advantage.
 
 1. `subprocess.call(['sync', '&&', 'sudo', 'purge'])` passes `&&`, `sudo`, and
    `purge` as *arguments to `sync`*, with no shell to interpret them. It syncs
-   and never purges. Every macOS measurement to date was taken on a warm page
-   cache. Fix to `sudo -n sh -c 'sync; purge'`, whose exit status is `purge`'s,
-   since it is the last command in the shell.
+   and never purges. This repository has not been run on macOS before, so no
+   published numbers are affected — the Darwin branch is simply untested code,
+   and this run is the first to exercise it. Fix to `sudo -n sh -c 'sync; purge'`,
+   whose exit status is `purge`'s, since it is the last command in the shell.
 2. The return code is never checked — `subprocess.call`'s result is discarded on
    both the Darwin and Linux branches. A failed clear is therefore invisible.
    `purge` does signal failure correctly (verified: exit code 1 with
@@ -287,7 +289,10 @@ uses `cargo binstall`, which pulls prebuilt release binaries that include them.
 - **16 GB RAM.** The read rows peaked around 2.5 GB on a 32 GB box, so they are
   safe. This is only a concern because dask and roundtrip — the rows that peaked
   near 4.4 GB — are excluded anyway.
-- **`ShardCache` thread-safety** is unverified; see §3.
+- **macOS is untrodden ground for this repository.** The Darwin code paths in
+  `clear_cache()` and `time_args()` have never been exercised, so expect to find
+  more than the one bug already identified. Step 2 of the execution order exists
+  to surface these before the run, not during it.
 - **`concurrent_target=1` is a judgment call**, not a neutral default. It is
   documented in the README so readers are not left to guess.
 - **Calibration may show the hour target is unreachable** at `best_of=5`, in
