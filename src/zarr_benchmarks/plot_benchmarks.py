@@ -5,6 +5,7 @@ import pandas as pd
 from matplotlib.lines import Line2D
 from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
+import shutil
 import subprocess
 import re
 from importlib.metadata import version
@@ -18,7 +19,7 @@ import zarrista
 plt.rcParams['svg.hashsalt'] = 'deterministic'
 
 LEGEND_COLS = 2
-YMAX_READ_ALL = 1.2
+YMAX_READ_ALL = 2.0
 YMAX_READ_ALL_DASK = 2
 # YMAX_READ_CHUNKS = 2.5
 # YMAX_READ_subchunks = 7.0
@@ -70,10 +71,16 @@ COLORS = {
     "zarrista_python": _tab10[6],
 }
 
+# LaTeX gives the nicest typography but is not installed everywhere. Fall back
+# to matplotlib's own text rendering rather than failing to plot at all.
+USETEX = shutil.which("latex") is not None
+if not USETEX:
+    print("warning: latex not found, falling back to matplotlib text rendering")
+
 plt.rcParams.update({
-    "text.usetex": True,
+    "text.usetex": USETEX,
     "font.family": "sans-serif",
-    "font.sans-serif": ["lmodern"],
+    "font.sans-serif": ["lmodern"] if USETEX else ["DejaVu Sans"],
     # "axes.autolimit_mode": "round_numbers",
 })
 
@@ -226,7 +233,7 @@ def plot_read_chunks(plot_dask: bool):
     df = df.reset_index(level=1)
     print(df)
 
-    fig = plt.figure(figsize=(9, 4), layout="constrained")
+    fig = plt.figure(figsize=(11, 4.4), layout="constrained")
     spec = fig.add_gridspec(2, 2)
     ax_time = fig.add_subplot(spec[:, 0])
     ax_mem = fig.add_subplot(spec[:, 1])
@@ -243,7 +250,7 @@ def plot_read_chunks(plot_dask: bool):
     custom_lines = [Line2D([0], [0], color='k', ls=':'),
                 Line2D([0], [0], color='k', ls='--'),
                 Line2D([0], [0], color='k', ls='-')]
-    fig.legend(custom_lines, IMAGES.values(), loc="outside upper right", ncol=2, title="Dataset", borderaxespad=0)
+    fig.legend(custom_lines, IMAGES.values(), loc="outside upper right", ncol=1, title="Dataset", borderaxespad=0)
 
     ax_time.get_legend().remove()
     ax_mem.get_legend().remove()
@@ -302,7 +309,7 @@ def plot_read_subchunks(plot_dask: bool):
     df = df.reset_index(level=1)
     print(df)
 
-    fig = plt.figure(figsize=(9, 4), layout="constrained")
+    fig = plt.figure(figsize=(11, 4.4), layout="constrained")
     spec = fig.add_gridspec(2, 2)
     ax_time = fig.add_subplot(spec[:, 0])
     ax_mem = fig.add_subplot(spec[:, 1])
@@ -317,7 +324,7 @@ def plot_read_subchunks(plot_dask: bool):
     title = f"dask/dask ({dask.__version__}) + zarr-developers/zarr-python ({zarr.__version__})" if plot_dask else "Zarr V3 Implementation"
     fig.legend(custom_lines, [implementation for implementation in implementations.values()], loc="outside upper left", ncol=2, title=title, borderaxespad=0)
     custom_lines = [Line2D([0], [0], color='k', ls='-')]
-    fig.legend(custom_lines, [IMAGES["data/benchmark_compress_shard.zarr"].replace("\n", " ")], loc="outside upper right", ncol=2, title="Dataset", borderaxespad=0)
+    fig.legend(custom_lines, [IMAGES["data/benchmark_compress_shard.zarr"].replace("\n", " ")], loc="outside upper right", ncol=1, title="Dataset", borderaxespad=0)
 
     ax_time.get_legend().remove()
     ax_mem.get_legend().remove()
