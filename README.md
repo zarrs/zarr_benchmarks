@@ -60,8 +60,10 @@ All datasets are $1024x1024x1024$ `uint16` arrays.
 > [!NOTE]
 > `zarrista` notes:
 > - Its concurrency axis is Python worker threads, not asyncio tasks: its async
->   API cannot accept a filesystem store. Reads pass `concurrent_target=1` so
->   the thread count is the only parallelism axis.
+>   API cannot accept a filesystem store. zarrista releases the GIL, so the
+>   threads give real parallelism. Codec options are left at their defaults, so
+>   the axis means the same as for the other implementations: N chunks in
+>   flight, each free to use the library's internal parallelism.
 > - The subchunk benchmark shares one `ShardCache` across threads, so each shard
 >   index is read once. Other implementations are not given an equivalent cache.
 

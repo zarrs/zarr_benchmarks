@@ -32,15 +32,18 @@ def main(path, concurrent_chunks, subchunks, read_all):
         # thread. Retaining it would hold the whole array in memory and inflate
         # both the peak RSS and the timings. The other implementations discard
         # their chunks too (asyncio.TaskGroup drops each task as it completes).
+        #
+        # Codec options are left at their defaults so that N means the same
+        # thing here as for the other implementations: N chunks in flight, each
+        # free to use the library's internal parallelism. Pinning
+        # concurrent_target=1 would make zarrista the only serial-at-N=1 line.
         def read_one(chunk_index):
-            array.retrieve_subchunk(
-                chunk_index, shard_cache=shard_cache, concurrent_target=1
-            )
+            array.retrieve_subchunk(chunk_index, shard_cache=shard_cache)
     else:
         grid_shape = array.chunk_grid_shape
 
         def read_one(chunk_index):
-            array.retrieve_chunk(chunk_index, concurrent_target=1)
+            array.retrieve_chunk(chunk_index)
 
     print("Domain shape", array.shape)
     print("Number of chunks", grid_shape)
