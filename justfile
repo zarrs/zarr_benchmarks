@@ -1,5 +1,5 @@
 setup:
-	cargo binstall -y zarrs_tools@0.7.5
+	cargo binstall -y zarrs_tools@0.8.1
 
 binstall:
 	curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
