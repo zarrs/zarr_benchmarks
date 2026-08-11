@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import subprocess
 import re
 import pandas as pd
@@ -67,7 +68,8 @@ def main():
     ]
     concurrent_chunks_list = [1, 2, 4, 8]  # , 16, 32]
 
-    best_of = 5
+    # Repetitions per measurement; results aggregate with nanmin.
+    best_of = int(os.environ.get("BEST_OF", "5"))
 
     index = []
     for image in images:

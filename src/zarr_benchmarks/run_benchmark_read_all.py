@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import subprocess
 import re
 import pandas as pd
@@ -59,7 +60,8 @@ def main():
         "data/benchmark_compress_shard.zarr",
     ]
 
-    best_of = 5
+    # Repetitions per measurement; results aggregate with nanmin.
+    best_of = int(os.environ.get("BEST_OF", "5"))
 
     index = []
     rows = []
