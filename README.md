@@ -73,6 +73,10 @@ This benchmark measures the minimum time and peak memory usage to "round trip" a
  - The disk cache is cleared between each measurement
  - These are best of 5 measurements
 
+> [!WARNING]
+> Measured on the earlier reference system, not the benchmark system above.
+> `zarrista` does not appear in this benchmark.
+
 [Table of raw measurements (benchmarks_roundtrip.md)](./measurements/benchmark_roundtrip.md)
 
 ### Standalone
@@ -95,10 +99,10 @@ This benchmark measures the minimum time and peak memory usage to read a dataset
 
 ![read chunks benchmark image](./plots/benchmark_read_chunks.svg)
 
-> [!NOTE]
-> `zarr-python` benchmarks with sharding are not visible in this plot
-
 ### Dask
+
+> [!WARNING]
+> Measured on the earlier reference system, not the benchmark system above.
 
 ![read chunks benchmark image dask](./plots/benchmark_read_chunks_dask.svg)
 
@@ -127,5 +131,8 @@ This benchmark measures the minimum time and peak memory usage to read an entire
 ![read all benchmark image](./plots/benchmark_read_all.svg)
 
 ### Dask
+
+> [!WARNING]
+> Measured on the earlier reference system, not the benchmark system above.
 
 ![read all benchmark image dask](./plots/benchmark_read_all_dask.svg)
