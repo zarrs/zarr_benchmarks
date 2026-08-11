@@ -5,10 +5,11 @@ import re
 import pandas as pd
 import math
 import numpy as np
-from zarr_benchmarks import clear_cache, time_args
+from zarr_benchmarks import clear_cache, time_args, ensure_sudo
 
 
 def main():
+    ensure_sudo()
     implementation_to_args = {
         "zarrs_rust": ["zarrs_benchmark_read_sync", "--read-all"],
         # "zarrs_rust_async_as_sync": ["zarrs_benchmark_read_async_as_sync", "--read-all"],
@@ -33,6 +34,10 @@ def main():
             "./src/zarr_benchmarks/zarrs_dask_python_benchmark_read.py",
             "--read_all",
         ],
+        "zarrista_python": [
+            "./src/zarr_benchmarks/zarrista_python_benchmark_read.py",
+            "--read_all",
+        ],
     }
 
     implementations = [
@@ -42,8 +47,10 @@ def main():
         "tensorstore_python",
         "zarr_python",
         "zarrs_python",
-        "zarr_dask_python",
-        "zarrs_dask_python",
+        "zarrista_python",
+        # Dask variants excluded from this run; see the design spec.
+        # "zarr_dask_python",
+        # "zarrs_dask_python",
     ]
 
     images = [
