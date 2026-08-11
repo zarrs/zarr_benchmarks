@@ -28,15 +28,19 @@ def main(path, concurrent_chunks, subchunks, read_all):
         # shard index is read once rather than once per subchunk.
         shard_cache = array.shard_cache()
 
+        # Each read returns nothing: the decoded data is dropped in the worker
+        # thread. Retaining it would hold the whole array in memory and inflate
+        # both the peak RSS and the timings. The other implementations discard
+        # their chunks too (asyncio.TaskGroup drops each task as it completes).
         def read_one(chunk_index):
-            return array.retrieve_subchunk(
+            array.retrieve_subchunk(
                 chunk_index, shard_cache=shard_cache, concurrent_target=1
             )
     else:
         grid_shape = array.chunk_grid_shape
 
         def read_one(chunk_index):
-            return array.retrieve_chunk(chunk_index, concurrent_target=1)
+            array.retrieve_chunk(chunk_index, concurrent_target=1)
 
     print("Domain shape", array.shape)
     print("Number of chunks", grid_shape)
